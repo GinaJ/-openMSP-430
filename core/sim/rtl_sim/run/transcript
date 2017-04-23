@@ -1,0 +1,67 @@
+# vsim -do ../bin/vsim_nogui.tcl -c tb_openMSP430 omsp_watchdog omsp_dbg omsp_dbg_uart omsp_dbg_i2c omsp_dbg_hwbrk omsp_clock_gate omsp_clock_mux 
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 6.5c Aug 27 2009 Linux 2.6.18-410.el5
+# //
+# //  Copyright 1991-2009 Mentor Graphics Corporation
+# //              All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND 
+# //  PROPRIETARY INFORMATION WHICH IS THE PROPERTY
+# //  OF MENTOR GRAPHICS CORPORATION OR ITS LICENSORS
+# //  AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading work.tb_openMSP430(fast)
+# Loading work.ram(fast)
+# Loading work.ram(fast__1)
+# Loading work.openMSP430(fast)
+# Loading work.omsp_clock_module(fast)
+# Loading work.omsp_sync_reset(fast)
+# Loading work.omsp_scan_mux(fast)
+# Loading work.omsp_sync_cell(fast)
+# Loading work.omsp_frontend(fast)
+# Loading work.omsp_execution_unit(fast)
+# Loading work.omsp_register_file(fast)
+# Loading work.omsp_alu(fast)
+# Loading work.omsp_mem_backbone(fast)
+# Loading work.omsp_sfr(fast)
+# Loading work.omsp_multiplier(fast)
+# Loading work.omsp_gpio(fast)
+# Loading work.omsp_timerA(fast)
+# Loading work.template_periph_8b(fast)
+# Loading work.template_periph_16b(fast)
+# Loading work.io_cell(fast)
+# Loading work.msp_debug(fast)
+# Loading work.omsp_watchdog(fast)
+# Loading work.omsp_wakeup_cell(fast)
+# Loading work.omsp_and_gate(fast)
+# Loading work.omsp_dbg(fast)
+# Loading work.omsp_dbg_uart(fast)
+# Loading work.omsp_dbg_i2c(fast)
+# Loading work.omsp_dbg_hwbrk(fast)
+# Loading work.omsp_clock_gate(fast)
+# Loading work.omsp_clock_mux(fast)
+# ** Warning: (vsim-3017) ../../../rtl/verilog/openMSP430.v(373): [TFMPC] - Too few port connections. Expected 55, found 47.
+#         Region: /tb_openMSP430/dut/frontend_0
+# ** Warning: (vsim-3722) ../../../rtl/verilog/openMSP430.v(373): [TFMPC] - Missing connection for port 'OBSERVE_i_state'.
+# ** Warning: (vsim-3722) ../../../rtl/verilog/openMSP430.v(373): [TFMPC] - Missing connection for port 'OBSERVE_e_state'.
+# ** Warning: (vsim-3722) ../../../rtl/verilog/openMSP430.v(373): [TFMPC] - Missing connection for port 'OBSERVE_decode'.
+# ** Warning: (vsim-3722) ../../../rtl/verilog/openMSP430.v(373): [TFMPC] - Missing connection for port 'OBSERVE_ir'.
+# ** Warning: (vsim-3722) ../../../rtl/verilog/openMSP430.v(373): [TFMPC] - Missing connection for port 'OBSERVE_irq_num'.
+# ** Warning: (vsim-3722) ../../../rtl/verilog/openMSP430.v(373): [TFMPC] - Missing connection for port 'OBSERVE_pc'.
+# ** Warning: (vsim-3017) ../../../rtl/verilog/omsp_execution_unit.v(211): [TFMPC] - Too few port connections. Expected 43, found 27.
+#         Region: /tb_openMSP430/dut/execution_unit_0/register_file_0
+# do ../bin/vsim_nogui.tcl 
+#  ===============================================
+# |                 START SIMULATION              |
+#  ===============================================
+#  ===============================================
+# |               SIMULATION PASSED               |
+#  ===============================================
+# 
+# DMA REPORT: Total Accesses:           0 Total RD:           0 Total WR:           0
+#             Total Errors:             0 Error RD:           0 Error WR:           0
+# 
+# SIMULATION SEED:  1374181929
+# 
+# ** Note: $finish    : ../../../bench/verilog/tb_openMSP430.v(750)
+#    Time: 1472575 ns  Iteration: 2  Instance: /tb_openMSP430

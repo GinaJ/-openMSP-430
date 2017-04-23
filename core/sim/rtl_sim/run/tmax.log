@@ -1,0 +1,225 @@
+WARNING:  $SYNOPSYS and $SYNOPSYS_TMAX are set differently, using $SYNOPSYS_TMAX
+WARNING:      SYNOPSYS_TMAX = /software/synopsys/tmax_2014.09-SP2
+WARNING:      SYNOPSYS      = /software/synopsys/syn_current
+ //*************************************************************************//
+ //                                                                         //
+ //                        TetraMAX(R) ATPG                                 //
+ //                        TetraMAX(R) DSMTest                              //
+ //                                                                         //
+ //                        Version J-2014.09-SP2                            //
+ //                        64-bit virtual address space                     //
+ //                                                                         //
+ //                Copyright (C) 1996-2014 Synopsys, Inc.                   //
+ //  This software and the associated documentation are confidential and    //
+ //  proprietary to Synopsys, Inc. Your use or disclosure of this software  //
+ //  is subject to the terms and conditions of a written license agreement  //
+ //  between you, or your company, and Synopsys, Inc.                       //
+ //                                                                         //
+ //                                                                         //
+ //*************************************************************************//
+ Tcl mode is on by default. Use -notcl to run in native mode.
+ Executing startup file "/software/synopsys/tmax_2014.09-SP2/admin/setup/tmaxtcl.rc".
+#=============================================================================#
+#                              Configuration                                  #
+#=============================================================================#
+set DESIGN_NAME      "openMSP430"
+openMSP430
+set NETLIST_FILES    [list "../../../gate/verilog/$DESIGN_NAME.gate.v"]
+../../../gate/verilog/openMSP430.gate.v
+set LIBRARY_FILES    [list "../../../gate/verilog/CORE65GPSVT_tmax.v"]
+../../../gate/verilog/CORE65GPSVT_tmax.v
+#=============================================================================#
+#                           Read Design & Technology files                    #
+#=============================================================================#
+# Rules to be ignored
+set_rules B7  ignore    ;# undriven module output pin
+set_rules B8  ignore    ;# unconnected module input pin
+set_rules B9  ignore    ;# undriven module internal net
+set_rules B10 ignore    ;# unconnected module internal net
+set_rules N20 ignore    ;# underspecified UDP
+set_rules N21 ignore    ;# unsupported UDP entry
+set_rules N23 ignore    ;# inconsistent UDP
+# Reset TMAX
+reset_all
+ Warning: All netlist and library module data are now deleted. (M41)
+build -force
+read_netlist -delete
+ Warning: All netlist and library module data are now deleted. (M41)
+set_netlist -sequential_modeling
+# Read gate level netlist
+foreach design_file $NETLIST_FILES {
+    read_netlist $design_file
+}
+ Begin reading netlist ( ../../../gate/verilog/openMSP430.gate.v )...
+ End parsing Verilog file ../../../gate/verilog/openMSP430.gate.v with 0 errors.
+ End reading netlist: #modules=102, top=openMSP430, #lines=6768, CPU_time=0.04 sec, Memory=2MB
+# Read library files
+foreach lib_file $LIBRARY_FILES {
+    read_netlist $lib_file
+}
+ Begin reading netlist ( ../../../gate/verilog/CORE65GPSVT_tmax.v )...
+ End parsing Verilog file ../../../gate/verilog/CORE65GPSVT_tmax.v with 0 errors.
+ End reading netlist: #modules=788, top=HS65_GS_XOR3X9, #lines=15766, CPU_time=0.02 sec, Memory=1MB
+# Remove unused net connections
+remove_net_connection -all
+# Build the model
+run_build_model $DESIGN_NAME
+ ------------------------------------------------------------------------------
+ Begin build model for topcut = openMSP430 ...
+ ------------------------------------------------------------------------------
+ Warning: There were 145 faultable pins lost due to tied gate optimizations. (M126)
+ There were 4926 primitives and 693 faultable pins removed during model optimizations
+ Warning: Rule B7 (undriven module output pin) was violated 7 times.
+ Warning: Rule B8 (unconnected module input pin) was violated 166 times.
+ Warning: Rule B9 (undriven module internal net) was violated 4 times.
+ Warning: Rule B10 (unconnected module internal net) was violated 415 times.
+ End build model: #primitives=7883, CPU_time=0.05 sec, Memory=3MB
+ ------------------------------------------------------------------------------
+ Begin learning analyses...
+ End learning analyses, total learning CPU time=0.40 sec.
+ ------------------------------------------------------------------------------
+#=============================================================================#
+#                                    Run DRC                                  #
+#=============================================================================#
+# Allow ATPG to use nonscan cell values loaded by the last shift.
+#set_drc -load_nonscan_cells
+# Report settings
+report_settings drc
+ drc =             test_proc_file=none,
+                   allow_unstable_set_resets=no, bidi_control_pin=no, clock=any,
+                   controller_clock=no, disturb_clock_grouping=yes, disturb_limits=1000 20,
+                   initialize_dff_dlat=X, multi_captures_per_load=yes, oscillation=500,
+                   remove_false_clocks=no, chain_trace=none, extract_cascaded_clock_gating=no,
+                   shadows=on, limit_shadow=none,
+                   skew=1, TLAs=yes, trace=off,
+                   store_setup=no, store_stability_patterns=no, store_unload_mode_data=no,
+                   store_setup_cycles=no,
+                   unstable_lsrams=no, compressor_debug_data=no,
+                   dslave_remodel=yes, reclassify_invalid_dslaves=yes,
+                   constraints=yes, z_check_with_all_constraints=no,
+                   use_cell_constraints=yes, clockdrc_use_cell_constraints=no,
+                   clock_constraints=none, internal_clock_timing=default,
+                   seq_comp_accumulator_mode=no,
+                   seq_comp_extend_test_setup=no,
+                   set_unload_mode_ports_to_x=yes,
+                   seq_comp_jtag_lbist_mode=off,
+                   multiple_pipes_per_port=no,
+                   dftmax_shift_cycles=0,
+                   load_nonscan_cells=no,
+                   store_full_cycles=NO_PROC,
+                   analyze_drc_violation=off
+                   blockage_aware_clock_grouping=no,
+                   regular_scan_shift_cycles=0,
+                   seq_comp_power_mode=no -all,
+                   dynamic_clock_equivalencing=off, scan_shift_clocks=none,
+                   fast_multifrequency_capture=spf, multiframe_paths=yes,
+                   observe_procedure=any, clock_gating_init_cycles_integer=0,
+                   pll_launch_on_shift=no, num_pll_cycles=0,
+                   check_multiple_shift_clocks=no,
+                   max_pll_simulation_passes=100, pll_simulate_test_setup=no,
+                   pipeline=no, pipeline_in_compressor=yes,
+                   report_x_sink=no, xchain_threshold_probability=0,
+                   freerunning_expansion=yes,
+                   allow_clocks_as_scan=no;
+                   check_user_serializer_bits=yes;
+                   lockup_after_compressor=no;
+                   independent_sync_clocks=no;
+# Run DRC
+#run_drc $SPF_FILE
+run_drc
+ ------------------------------------------------------------------------------
+ Begin scan design rules checking...
+ ------------------------------------------------------------------------------
+ Begin simulating test protocol procedures...
+ Test protocol simulation completed, CPU time=0.00 sec.
+ ------------------------------------------------------------------------------
+ Begin scan chain operation checking...
+ Scan chain operation checking completed, CPU time=0.00 sec.
+ ------------------------------------------------------------------------------
+ Begin clock rules checking...
+ Warning: Rule C2 (unstable nonscan DFF when clocks off) was violated 488 times.
+ Warning: Rule C25 (unstable cell clock input connected from multiple sources) was violated 486 times.
+ Clock rules checking completed, CPU time=0.03 sec.
+ ------------------------------------------------------------------------------
+ Begin nonscan rules checking...
+ Nonscan cell summary: #DFF=488  #DLAT=0  #RAM_outs=0  tla_usage_type=none
+ Nonscan behavior:  #CU=488
+ Nonscan rules checking completed, CPU time=0.00 sec.
+ ------------------------------------------------------------------------------
+ Begin DRC dependent learning...
+ Fast-sequential depth results: control=0(0), observe=0(0), detect=0(0), CPU time=0.00 sec
+ DRC dependent learning completed, CPU time=0.01 sec.
+ ------------------------------------------------------------------------------
+ DRC Summary Report
+ ------------------------------------------------------------------------------
+ Warning: Rule C2 (unstable nonscan DFF when clocks off) was violated 488 times.
+ Warning: Rule C25 (unstable cell clock input connected from multiple sources) was violated 486 times.
+ There were 974 violations that occurred during DRC process.
+ Design rules checking was successful, total CPU time=0.04 sec.
+ ------------------------------------------------------------------------------
+#=============================================================================#
+#                               Fault Simulation                              #
+#=============================================================================#
+set_patterns -external dumpports_rtl.openMSP430.vcd -sensitive -strobe_period { 25 ns } -strobe_offset { 95 ns }
+ Warning: Rule V23 (strobe conflict) was violated 77 times.
+ End reading 58900 patterns, CPU_time = 0.87 sec, Memory = 10MB
+set_simulation -num_processes 0
+run_simulation -sequential
+ Begin sequential simulation of 58900 external patterns.
+ Simulation completed: #patterns=58900/58905, #fail_pats=0(0), #failing_meas=0(0), CPU time=11.56
+set_faults -model stuck
+add_faults -all
+ 29424 faults were added to fault list.
+run_fault_sim -sequential
+ ------------------------------------------------------------------------------
+ Begin sequential fault simulation of 28698 faults on 58900 external patterns.
+ -----------------------------------------------------------
+ #faults    pass #faults   cum. #faults     test    process
+ simulated  detect/total   detect/active  coverage  CPU time
+ ---------  -------------  -------------  --------  --------
+ 1581         1227   1581    1227  27471     4.30%    104.56
+ 3274         1532   1693    2759  25939     9.65%    140.98
+ 4758         1258   1484    4017  24681    14.14%    200.25
+ 6246         1322   1488    5339  23359    18.83%    247.96
+ 7932         1485   1686    6824  21874    24.01%    290.37
+ 9666         1642   1734    8466  20232    29.74%    333.39
+ 11265        1446   1599    9912  18786    34.80%    376.09
+ 12832        1456   1567   11368  17330    39.93%    417.78
+ 14447        1514   1615   12882  15816    45.22%    457.08
+ 16015        1162   1568   14044  14654    49.29%    557.80
+ 17649        1455   1634   15499  13199    54.37%    617.48
+ 19243        1347   1594   16846  11852    59.07%    685.30
+ 20785        1425   1542   18271  10427    64.07%    730.50
+ 22313        1367   1528   19638   9060    68.89%    773.06
+ 23825        1324   1512   20962   7736    73.51%    837.65
+ 25628        1726   1803   22688   6010    79.52%    864.49
+ 27434        1800   1806   24488   4210    85.80%    878.53
+ 28698        1232   1264   25720   2978    90.11%    892.93
+ Fault simulation completed: #faults_simulated=28698, test_coverage=90.11%, CPU time=892.93
+# # Create reports
+report_summaries
+     Uncollapsed Stuck Fault Summary Report
+ -----------------------------------------------
+ fault class                     code   #faults
+ ------------------------------  ----  ---------
+ Detected                         DT      25720
+ Possibly detected                PT        280
+ Undetectable                     UD        726
+ ATPG untestable                  AU          0
+ Not detected                     ND       2698
+ -----------------------------------------------
+ total faults                             29424
+ test coverage                            90.11%
+ -----------------------------------------------
+            Pattern Summary Report
+ -----------------------------------------------
+ #internal patterns                           0
+ #external patterns (dumpports_rtl.openMSP430.vcd)  58900
+     #full_sequential patterns            58900
+ -----------------------------------------------
+write_faults output_fault_list.txt -all -replace
+ Write faults completed: 29424 faults were written into file "output_fault_list.txt".
+report_faults -level {100 1} -verbose > report_faults_verbose.txt
+report_faults -level {5 100} > report_faults.txt
+# 
+quit
