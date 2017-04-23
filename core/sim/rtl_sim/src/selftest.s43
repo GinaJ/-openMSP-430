@@ -1,0 +1,49 @@
+
+.include "pmem_defs.asm"
+
+.global main
+
+main:
+        /* ---------------------- INITIALIZE REGISTERS --------------------- */
+	mov     #0x2202, r2
+	mov     #0x3333, r3
+	mov     #0x4444, r4
+	mov     #0x5555, r5
+	mov     #0x6666, r6
+	mov     #0x7777, r7
+	mov     #0x8888, r8
+	mov     #0x9999, r9
+	mov     #0xaaaa, r10
+	mov     #0xbbbb, r11
+	mov     #0xcccc, r12
+	mov     #0xdddd, r13
+	mov     #0xeeee, r14
+
+	mov     #0x1000, r15
+
+
+        /* ----------------------         END OF TEST        --------------- */
+end_of_test:
+	nop
+	br #0xffff                         /* THIS BRANCH WILL STOP THE SIMULATION */
+
+
+        /* ----------------------         INTERRUPT VECTORS  --------------- */
+
+.section .vectors, "a"
+.word end_of_test  ; Interrupt  0 (lowest priority)    <unused>
+.word end_of_test  ; Interrupt  1                      <unused>
+.word end_of_test  ; Interrupt  2                      <unused>
+.word end_of_test  ; Interrupt  3                      <unused>
+.word end_of_test  ; Interrupt  4                      <unused>
+.word end_of_test  ; Interrupt  5                      <unused>
+.word end_of_test  ; Interrupt  6                      <unused>
+.word end_of_test  ; Interrupt  7                      <unused>
+.word end_of_test  ; Interrupt  8                      <unused>
+.word end_of_test  ; Interrupt  9                      <unused>
+.word end_of_test  ; Interrupt 10                      Watchdog timer
+.word end_of_test  ; Interrupt 11                      <unused>
+.word end_of_test  ; Interrupt 12                      <unused>
+.word end_of_test  ; Interrupt 13                      <unused>
+.word end_of_test  ; Interrupt 14                      NMI
+.word main         ; Interrupt 15 (highest priority)   RESET
